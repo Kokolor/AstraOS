@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "stdarg.h": "c",
+        "stddef.h": "c",
+        "stdint.h": "c",
+        "ratio": "cpp",
+        "idt.h": "c"
+    }
+}
