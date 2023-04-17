@@ -45,7 +45,7 @@ kernel.elf: $(OBJS)
 clean:
 	rm -f $(OBJS)
 	rm -f kernel.elf
-    rm *.o
+	rm *.o
 	rm astra.iso
 
 iso:

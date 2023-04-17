@@ -4,6 +4,7 @@
 #include <arch/x86_64/gdt.h>
 #include <arch/x86_64/idt.h>
 #include <limine/limine.h>
+#include <lib/libframebuf.h>
 
 static volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
@@ -11,6 +12,7 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 
 void _start(void)
 {
+    serial_puts("[AstraOS:Kernel] Starting kernel initialization...\n");
     init_serial();
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
@@ -29,12 +31,20 @@ void _start(void)
         }
     }
 
+    init_libframebuf(framebuffer);
+    draw_rect(100, 100, 100, 100, 0xFFFFFF);
+    draw_hline(100, 250, 100, 0xFFFFFF);
+    draw_vline(100, 300, 100, 0xFFFFFF);
+
+    serial_puts("[AstraOS:Kernel] Starting GDT initialization...");
     init_gdt();
-    serial_puts("GDT Loaded.\n");
+    serial_puts(" OK\n");
+    serial_puts("[AstraOS:Kernel] Starting IDT initialization...");
     init_idt();
     init_pic();
     asm("sti");
-    serial_puts("IDT Loaded.\n");
+    serial_puts(" OK\n");
+    serial_puts("[AstraOS:Kernel] Kernel has been initialized. Locking up in a while...\n");
 
     while (1)
         ;
