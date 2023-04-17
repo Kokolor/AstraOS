@@ -1,6 +1,13 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <stddef.h>
+#include <stdarg.h>
 
+#define SERIAL_PORT 0x3f8
+
+void init_serial(void);
+void serial_putc(char c);
+void serial_puts(const char *str);
 void *memcpy(void *dest, const void *src, size_t n);
 void *memset(void *s, int c, size_t n);
 void *memmove(void *dest, const void *src, size_t n);

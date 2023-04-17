@@ -2,7 +2,9 @@
     "files.associations": {
         "boot_info.h": "c",
         "astra-graphics.h": "c",
-        "random": "c"
+        "random": "c",
+        "libframebuf.h": "c",
+        "libfbfonts.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
