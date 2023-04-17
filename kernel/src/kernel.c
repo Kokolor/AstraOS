@@ -11,6 +11,10 @@ void _kstart(multiboot_info_t *mboot_info)
 {
     init_serial();
     init_gdt();
+    init_idt();
+    init_isr();
+    init_irq();
+    init_keyboard();
     init_libframebuf(mboot_info);
 
     int frames = 0;
@@ -22,7 +26,7 @@ void _kstart(multiboot_info_t *mboot_info)
         draw_roundrect(100, 100, 100, 100, 7, 0xFFFFFF);
 
         draw_string("Hi, the World!", 110, 110, 0x000000);
-        
+
         swap_framebuffers();
 
         frames++;
