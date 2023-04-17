@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "gdt.h"
+#include <lib/lib.h>
 
 struct gdt_descriptor gdt[GDTSIZE];
 struct gdt_ptr gdt_pointer;
@@ -16,6 +17,8 @@ void init_gdt_descriptor(uint32_t base, uint32_t limit, uint8_t acces, uint8_t o
 }
 
 void init_gdt(void) {
+	serial_puts("[AstraOS:Kernel] Initializing GDT...");
+
 	init_gdt_descriptor(0x0, 0x0, 0x0, 0x0, &gdt[0]);
 	init_gdt_descriptor(0x0, 0xFFFFF, 0x9B, 0x0D, &gdt[1]);	/* code */
 	init_gdt_descriptor(0x0, 0xFFFFF, 0x93, 0x0D, &gdt[2]);	/* data */
@@ -35,4 +38,6 @@ void init_gdt(void) {
             movw %ax, %gs	\n \
             ljmp $0x08, $next	\n \
             next:		\n");
+
+	serial_puts(" OK\n");
 }
