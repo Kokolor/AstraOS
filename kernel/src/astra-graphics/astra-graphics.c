@@ -130,36 +130,6 @@ void put_string(char *string, uint32_t color)
     }
 }
 
-void draw_pattern_1()
-{
-    int x, y;
-    for (y = 0; y < 720; y++)
-    {
-        for (x = 0; x < 1280; x++)
-        {
-            int r = (x % 256);
-            int g = (y % 256);
-            int b = ((x + y) % 256);
-            set_pixel(x, y, (r << 16) | (g << 8) | b);
-        }
-    }
-}
-
-void draw_pattern_2()
-{
-    int x, y;
-    for (y = 0; y < 720; y++)
-    {
-        for (x = 0; x < 1280; x++)
-        {
-            int r = (x + y) % 256;
-            int g = (x * y / 256) % 256;
-            int b = (x * x + y * y) % 256;
-            set_pixel(x, y, (r << 16) | (g << 8) | b);
-        }
-    }
-}
-
 void clear_screen(uint32_t color)
 {
     cursor_x = 0;

@@ -2,8 +2,7 @@
     "files.associations": {
         "boot_info.h": "c",
         "astra-graphics.h": "c",
-        "random": "c",
-        "compare": "cpp"
+        "random": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

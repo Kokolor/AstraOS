@@ -14,7 +14,5 @@ void set_lolcat();
 void scroll_up();
 void put_char(char c, int x, int y, uint32_t color);
 void put_string(char *string, uint32_t color);
-void draw_pattern_1();
-void draw_pattern_2();
 void clear_screen(uint32_t color);
 void swap_buffers();
