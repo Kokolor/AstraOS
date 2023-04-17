@@ -1,7 +1,5 @@
 #include <stddef.h>
 #include <stdint.h>
-#include <stddef.h>
-#include <stdarg.h>
 
 void *memcpy(void *dest, const void *src, size_t n);
 void *memset(void *s, int c, size_t n);
@@ -13,3 +11,4 @@ unsigned short inw(unsigned short port);
 void outw(unsigned short port, unsigned short value);
 void delay(uint32_t ms);
 void itoa(char *buf, unsigned long int n, int base);
+double pow(double base, double exponent);

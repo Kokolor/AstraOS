@@ -128,3 +128,21 @@ void itoa(char *buf, unsigned long int n, int base)
         buf[i] = tmp;
     }
 }
+
+double pow(double base, double exponent)
+{
+    if (exponent == 0)
+    {
+        return 1;
+    }
+
+    double result = base;
+    int i;
+
+    for (i = 1; i < exponent; i++)
+    {
+        result *= base;
+    }
+
+    return result;
+}
