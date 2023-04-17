@@ -29,7 +29,7 @@ LD_FLAGS :=                 \
 
 kernel.elf: $(OBJS)
 	make asm
-	$(LD) $(LD_FLAGS) $(OBJS) entry.o -o $@
+	$(LD) $(LD_FLAGS) $(OBJS) entry.o idt.o -o $@
 
 iso:
 	rm -rf iso_root
@@ -52,6 +52,7 @@ clean:
 
 asm:
 	nasm -f elf32 kernel/src/entry.asm -o entry.o
+	nasm -f elf32 kernel/src/arch/i386/idt.asm -o idt.o
 
 run:
 	make iso
