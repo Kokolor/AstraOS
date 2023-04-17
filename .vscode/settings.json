@@ -3,7 +3,8 @@
         "boot_info.h": "c",
         "astra-graphics.h": "c",
         "random": "c",
-        "compare": "cpp"
+        "libframebuf.h": "c",
+        "libfbfonts.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
