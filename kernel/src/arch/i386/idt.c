@@ -37,7 +37,10 @@ void keyboard_handler(struct regs *r)
 
     scancode = inb(0x60);
 
-    serial_puts("Key pressed!");
+    if (scancode & 0x80)
+    {
+        serial_puts("Key pressed!");
+    }
 }
 
 void init_keyboard()
