@@ -42,5 +42,7 @@ void keyboard_handler(struct regs *r)
 
 void init_keyboard()
 {
+    serial_puts("[AstraOS:Kernel] Initializing keyboard...");
     irq_install_handler(1, keyboard_handler);
+    serial_puts(" OK\n");
 }
