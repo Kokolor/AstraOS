@@ -483,12 +483,12 @@ void draw_string(char *string, int x, int y, uint32_t col)
 {
     cursorx = x;
     cursory = y;
-    
+
     for (int i = 0; string[i] != '\0'; i++)
     {
         if (string[i] == '\n')
         {
-            cursorx = 0;
+            cursorx = x;
             cursory += CHAR_HEIGHT;
             if (cursory >= 720)
             {

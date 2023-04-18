@@ -121,7 +121,7 @@ void fault_handler(struct registers *r)
     serial_puts("[AstraOS:Kernel] Kernel Panic. Displaying error message and halting now.");
     
     clear();
-    draw_string("AstraOS ran into a problem.", 10, 10, 0xff0000);
+    draw_string(":(\nAstraOS ran into a problem.", 10, 10, 0xff0000);
     swap_framebuffers();
 
     asm("hlt");

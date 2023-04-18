@@ -104,7 +104,7 @@ void put_string(char *string, uint32_t color)
     {
         if (string[i] == '\n')
         {
-            cursor_x = 0;
+            //cursor_x = 0; seriously, why?
             cursor_y += CHAR_HEIGHT;
             if (cursor_y >= 720)
             {
