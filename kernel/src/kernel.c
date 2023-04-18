@@ -1,78 +1,52 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <serial/serial.h>
-#include <arch/x86_64/gdt.h>
-#include <arch/x86_64/idt.h>
-#include <limine/limine.h>
+#include <stdarg.h>
+#include <multiboot/boot_info.h>
+#include <arch/i386/gdt.h>
+#include <libframebuf/libframebuf.h>
+#include <libframebuf/libfbfonts.h>
+#include <libframebuf/libfbbitmaps.h>
+#include <lib/lib.h>
 
-static volatile struct limine_framebuffer_request framebuffer_request = {
-    .id = LIMINE_FRAMEBUFFER_REQUEST,
-    .revision = 0};
+// TODO : Make bitmaps work in LibFrameBuffer
 
-void _start(void)
+uint8_t menubmp[] = {
+    0xFF0000, 0xFF0000, 0xFF0000, 0xFF0000,
+    0xFF0000, 0xFF0000, 0xFF0000, 0xFF0000,
+    0xFF0000, 0xFF0000, 0xFF0000, 0xFF0000,
+    0xFF0000, 0xFF0000, 0xFF0000, 0xFF0000
+};
+
+void _kstart(multiboot_info_t *mboot_info)
 {
     init_serial();
-    struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
-
-    int width = framebuffer->width;
-    int height = framebuffer->height;
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            uint32_t color = (0xFF000000) |
-                ((x * 255 / width) << 16) |
-                ((y * 255 / height) << 8) |
-                ((x + y) % 255);
-            uint32_t *fb = framebuffer->address;
-            fb[y * width + x] = color;
-
-        }
-    }
-
     init_gdt();
-    serial_puts("GDT Loaded.\n");
     init_idt();
-    init_pic();
-    asm("sti");
-    serial_puts("IDT Loaded.\n");
+    init_isr();
+    init_irq();
+    init_keyboard();
+    init_libframebuf(mboot_info);
+
+    int frames = 0;
+
+    bitmap_t *ml;
+    
+    ml->width = 4;
+    ml->height = 4;
+    ml->rawdata[16] = menubmp;
 
     while (1)
-        ;
+    {
+        //hi
+        
+        clear();
+
+        draw_roundrect(100, 100, 100, 100, 7, 0xFFFFFF);
+
+        draw_string("Hi, the World!", 110, 110, 0x000000);
+
+        swap_framebuffers();
+
+        frames++;
+    }
 }
-
-// #include <stdint.h>
-// #include <stddef.h>
-// #include <serial/serial.h>
-// #include <arch/x86_64/gdt.h>
-// #include <limine/limine.h>
-
-// static volatile struct limine_framebuffer_request framebuffer_request = {
-//     .id = LIMINE_FRAMEBUFFER_REQUEST,
-//     .revision = 0};
-
-// void _start(void)
-// {
-//     init_serial();
-//     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
-
-//     int width = framebuffer->width;
-//     int height = framebuffer->height;
-
-//     for (int y = 0; y < height; y++) {
-//         for (int x = 0; x < width; x++) {
-//             uint32_t color = (0xFF000000) |
-//                 ((x * 255 / width) << 16) |
-//                 ((y * 255 / height) << 8) |
-//                 ((x ^ y) % 255);
-//             uint32_t *fb = framebuffer->address;
-//             fb[y * width + x] = color;
-
-//         }
-//     }
-
-//     init_gdt();
-//     serial_puts("GDT Loaded.\n");
-
-//     while (1)
-//         ;
-// }
