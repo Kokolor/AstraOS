@@ -30,7 +30,6 @@ LD_FLAGS :=                 \
 kernel.elf: $(OBJS)
 	make asm
 	$(LD) $(LD_FLAGS) $(OBJS) entry.o idt.o -o $@
-
 iso:
 	rm -rf iso_root
 	mkdir -p iso_root

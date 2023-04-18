@@ -19,6 +19,7 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
 void init_idt()
 {
     serial_puts("[AstraOS:Kernel] Initializing IDT...");
+    
     idt_pointer.limit = (sizeof(struct idt_entry) * 256) - 1;
     idt_pointer.base = &idt;
 

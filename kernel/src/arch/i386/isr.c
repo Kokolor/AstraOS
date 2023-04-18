@@ -38,7 +38,7 @@ extern void isr31();
 void init_isr()
 {
     serial_puts("[AstraOS:Kernel] Initializing ISR...");
-
+    
     idt_set_gate(0, (unsigned)isr0, 0x08, 0x8E);
     idt_set_gate(1, (unsigned)isr1, 0x08, 0x8E);
     idt_set_gate(2, (unsigned)isr2, 0x08, 0x8E);
@@ -74,7 +74,6 @@ void init_isr()
     idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
     idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
     idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
-
     serial_puts(" OK\n");
 }
 
