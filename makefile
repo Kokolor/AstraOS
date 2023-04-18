@@ -4,35 +4,24 @@ CC = gcc
 LD = ld
 
 CFLAGS :=                  \
-    -Wall \
-    -Wextra \
-    -std=gnu11 \
-    -ffreestanding \
-    -fno-stack-protector \
-    -fno-stack-check \
-    -fno-lto \
-    -fno-PIE \
-    -fno-PIC \
-    -m64 \
-	-Ikernel/src/ \
-    -march=x86-64 \
-    -mabi=sysv \
-    -mno-80387 \
-    -mno-mmx \
-    -mno-sse \
-    -mno-sse2 \
-    -mno-red-zone \
-    -mcmodel=kernel                   \
+    -Ikernel/src	        \
+	-fpermissive			\
+    -ffreestanding          \
+    -fno-stack-protector    \
+    -fno-pic                \
+	-w						\
+    -O1                     \
+    -m32                    \
+    -g                      \
 
 ASM_FLAGS :=                \
-    -f elf64
+    -f elf32
 
 LD_FLAGS :=                 \
-    -nostdlib \
-    -static \
-    -m elf_x86_64 \
-    -z max-page-size=0x1000 \
-    -T kernel/link.ld
+    -nostdlib               \
+    -Tkernel/link.ld        \
+	-m elf_i386				\
+    -z max-page-size=0x1000
 
 .SUFFIXE: .c
 %.o: %.c
@@ -40,13 +29,7 @@ LD_FLAGS :=                 \
 
 kernel.elf: $(OBJS)
 	make asm
-	$(LD) $(LD_FLAGS) $(OBJS) gdt.o idt.o -o $@
-
-clean:
-	rm -f $(OBJS)
-	rm -f kernel.elf
-    rm *.o
-	rm astra.iso
+	$(LD) $(LD_FLAGS) $(OBJS) entry.o idt.o -o $@
 
 iso:
 	rm -rf iso_root
@@ -61,10 +44,16 @@ iso:
 	limine/limine-deploy astra.iso
 	rm -rf iso_root
 
+clean:
+	rm -f $(OBJS)
+	rm *.o
+	rm -f kernel.elf
+	rm -f astra.iso
+
 asm:
-	nasm -f elf64 -o gdt.o kernel/src/arch/x86_64/gdt.asm
-	nasm -f elf64 -o idt.o kernel/src/arch/x86_64/idt.asm
+	nasm -f elf32 kernel/src/entry.asm -o entry.o
+	nasm -f elf32 kernel/src/arch/i386/idt.asm -o idt.o
 
 run:
 	make iso
-	qemu-system-x86_64 -m 128M -enable-kvm -serial stdio -cdrom ./astra.iso
+	qemu-system-i386 -m 128M -enable-kvm -serial stdio -cdrom ./astra.iso
