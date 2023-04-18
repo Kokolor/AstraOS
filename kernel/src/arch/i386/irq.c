@@ -1,4 +1,5 @@
 #include "idt.h"
+#include <lib/lib.h>
 
 extern void irq0();
 extern void irq1();
@@ -49,6 +50,7 @@ void irq_remap(void)
 
 void init_irq()
 {
+    serial_puts("[AstraOS:Kernel] Initializing IRQ...");
     irq_remap();
 
     idt_set_gate(32, (unsigned)irq0, 0x08, 0x8E);
@@ -68,6 +70,8 @@ void init_irq()
     idt_set_gate(45, (unsigned)irq13, 0x08, 0x8E);
     idt_set_gate(46, (unsigned)irq14, 0x08, 0x8E);
     idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
+    
+    serial_puts(" OK\n");
 }
 
 void irq_handler(struct registers *r)

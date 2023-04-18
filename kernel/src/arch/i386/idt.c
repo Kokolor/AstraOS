@@ -1,4 +1,5 @@
 #include "idt.h"
+#include <lib/lib.h>
 
 struct idt_entry idt[256];
 struct idt_ptr idt_pointer;
@@ -17,12 +18,15 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
 
 void init_idt()
 {
+    serial_puts("[AstraOS:Kernel] Initializing IDT...");
+    
     idt_pointer.limit = (sizeof(struct idt_entry) * 256) - 1;
     idt_pointer.base = &idt;
 
     memset(&idt, 0, sizeof(struct idt_entry) * 256);
 
     idt_load();
+    serial_puts(" OK\n");
 }
 
 /**void keyboard_handler(struct regs *r)
@@ -41,7 +45,7 @@ void init_idt()
         draw_pattern_1();
         swap_buffers();
     }
-}**
+}**/
 
 void init_keyboard()
 {
