@@ -4,7 +4,8 @@
         "astra-graphics.h": "c",
         "random": "c",
         "libframebuf.h": "c",
-        "libfbfonts.h": "c"
+        "libfbfonts.h": "c",
+        "libfbbitmaps.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

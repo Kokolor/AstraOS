@@ -85,7 +85,26 @@ const uint32_t succ[] = {
 
 void _kstart(multiboot_info_t *mboot_info)
 {
+    char *width;
+    char *height;
+    char *bpp;
+    itoa(width, mboot_info->framebuffer_width, 10);
+
     init_serial();
+    serial_puts("[AstraOS:Kernel] Framebuffer resolution : ");
+    serial_puts(width);
+    serial_putc('x');
+
+    itoa(height, mboot_info->framebuffer_height, 10);
+
+    serial_puts(height);
+    serial_putc('x');
+    
+    itoa(bpp, mboot_info->framebuffer_bpp, 10);
+    
+    serial_puts(bpp);
+    serial_putc('\n');
+
     init_gdt();
     init_idt();
     init_isr();
@@ -107,7 +126,7 @@ void _kstart(multiboot_info_t *mboot_info)
 
         draw_string("Hi, the World!", 110, 110, 0x000000);
 
-        drawbitmap(succ, 121, 70, 250, 250);
+        draw_bitmap(succ, 121, 70, 250, 250);
 
         swap_framebuffers();
 

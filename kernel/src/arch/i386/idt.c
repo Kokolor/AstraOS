@@ -39,7 +39,11 @@ void keyboard_handler(struct regs *r)
 
     if (scancode & 0x80)
     {
-        serial_puts("Key pressed!");
+        serial_puts("Key pressed!\n");
+        if (scancode & KEY_U)
+        {
+            serial_puts("U key pressed!\n");
+        }
     }
 }
 
