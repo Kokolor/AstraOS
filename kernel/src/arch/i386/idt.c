@@ -1,8 +1,5 @@
 #include "idt.h"
 #include <lib/lib.h>
-#include <libframebuf/libfbfonts.h>
-#include <libframebuf/libframebuf.h>
-
 struct idt_entry idt[256];
 struct idt_ptr idt_pointer;
 
