@@ -1,20 +1,21 @@
 #include <libasg/libasg.h>
 
-multiboot_info_t *mbi;
+multiboot_info_t *mbinfo;
 
 void init_libasg(multiboot_info_t *info)
 {
-    mbi = info;
+    mbinfo = info;
 }
+
 void set_pixel(int x, int y, Color color)
 {
-    unsigned *backbuffer = (unsigned *)(mbi->framebuffer_addr + (y + mbi->framebuffer_height) * mbi->framebuffer_pitch);
+    unsigned *backbuffer = (unsigned *)(mbinfo->framebuffer_addr + (y + mbinfo->framebuffer_height) * mbinfo->framebuffer_pitch);
     backbuffer[x] = (color.r << 16) | (color.g << 8) | color.b;
 }
 
 Color get_pixel(int x, int y)
 {
-    unsigned *backbuffer = (unsigned *)(mbi->framebuffer_addr + (y + mbi->framebuffer_height) * mbi->framebuffer_pitch);
+    unsigned *backbuffer = (unsigned *)(mbinfo->framebuffer_addr + (y + mbinfo->framebuffer_height) * mbinfo->framebuffer_pitch);
     unsigned color = backbuffer[x];
     return (Color){(color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF};
 }
@@ -30,15 +31,31 @@ void set_rect(int x, int y, int width, int height, Color color)
     }
 }
 
-void set_bitmap(int x, int y, Bitmap b)
+void set_image(Image *image, int x, int y)
 {
-    for (uint32_t i = y; i < b.width; i++) {
-        for (uint32_t j = x; j < b.height; j++) {
-            uint8_t color = b.rawdata[(i - y) * b.width + (j - x)];
-            Color col = (Color){(color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF};
-            set_pixel(x + j, y + i, col);
+    for (int j = 0; j < image->height; j++)
+    {
+        for (int i = 0; i < image->width; i++)
+        {
+            Color color;
+            uint32_t pixel = image->pixels[j * image->width + i];
+            color.a = (pixel >> 24) & 0xFF;
+            color.r = (pixel >> 16) & 0xFF;
+            color.g = (pixel >> 8) & 0xFF;
+            color.b = pixel & 0xFF;
+            set_pixel(x + i, y + j, color);
         }
     }
+}
+
+Image create_image(uint32_t *data, uint32_t width, uint32_t height)
+{
+    Image img;
+    img.pixels = (uint32_t *)malloc(width * height * sizeof(uint32_t));
+    memcpy(img.pixels, data, width * height * sizeof(uint32_t));
+    img.width = width;
+    img.height = height;
+    return img;
 }
 
 void set_round_rect(int x, int y, int width, int height, int radius, Color color)
@@ -96,5 +113,5 @@ void set_circle(int x0, int y0, int radius, Color color)
 
 void flush()
 {
-    memcpy(mbi->framebuffer_addr, mbi->framebuffer_addr + mbi->framebuffer_height * mbi->framebuffer_pitch, mbi->framebuffer_pitch * mbi->framebuffer_height);
+    memcpy(mbinfo->framebuffer_addr, mbinfo->framebuffer_addr + mbinfo->framebuffer_height * mbinfo->framebuffer_pitch, mbinfo->framebuffer_pitch * mbinfo->framebuffer_height);
 }
