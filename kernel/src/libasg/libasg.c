@@ -7,6 +7,17 @@ void init_libasg(multiboot_info_t *info)
     mbinfo = info;
 }
 
+void clear_screen(Color color)
+{
+    for (int y = 0; y < mbinfo->framebuffer_height; y++)
+    {
+        for (int x = 0; x < mbinfo->framebuffer_width; x++)
+        {
+            set_pixel(x, y, color);
+        }
+    }
+}
+
 void set_pixel(int x, int y, Color color)
 {
     unsigned *backbuffer = (unsigned *)(mbinfo->framebuffer_addr + (y + mbinfo->framebuffer_height) * mbinfo->framebuffer_pitch);
