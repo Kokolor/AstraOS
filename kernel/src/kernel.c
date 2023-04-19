@@ -10,7 +10,9 @@ void _kstart(multiboot_info_t *mboot_info)
 {
     init_libasg(mboot_info);
     Color color1 = {255, 0, 0};
-    set_pixel(15, 15, color1);
+    Color color2 = {0, 255, 255};
+    set_rect(15, 15, 35, 35, color1);
+    set_circle(75, 75, 25, color2);
     flush();
 
     while (1);
