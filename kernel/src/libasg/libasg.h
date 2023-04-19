@@ -19,6 +19,7 @@ typedef struct
 } Image;
 
 void init_libasg(multiboot_info_t *info);
+void clear_screen(Color color);
 void set_pixel(int x, int y, Color color);
 Color get_pixel(int x, int y);
 void set_rect(int x, int y, int width, int height, Color color);
