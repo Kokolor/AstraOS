@@ -7,6 +7,6 @@
 #define DVDVIDEOLOLOL_HEIGHT 151
 #define DVDVIDEOLOLOL_WIDTH 213
 
-extern uint32_t dvdvideololol[];
-extern uint32_t succ[];
-extern uint32_t astralogo[];
+extern uint8_t dvdvideololol[];
+extern uint8_t succ[];
+extern uint8_t astralogo[];
