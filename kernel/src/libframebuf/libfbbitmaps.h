@@ -1,1 +1,0 @@
-void draw_bitmap(uint32_t *rawdata, int width, int height, int x, int y);

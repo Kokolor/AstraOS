@@ -1,5 +1,3 @@
-#include <libframebuf/libframebuf.h>
-#include <libframebuf/libfbfonts.h>
 #include <lib/lib.h>
 
 extern void isr0();
@@ -119,10 +117,6 @@ unsigned char *exception_messages[] =
 void fault_handler(struct registers *r)
 {
     serial_puts("[AstraOS:Kernel] Kernel Panic. Displaying error message and halting now.");
-    
-    clear();
-    draw_string(":(\nAstraOS ran into a problem.", 10, 10, 0xff0000);
-    swap_framebuffers();
 
     asm("hlt");
 }
