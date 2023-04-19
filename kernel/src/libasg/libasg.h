@@ -1,5 +1,5 @@
 #include <multiboot/multiboot.h>
-#include <lib/lib.h> // For memcpy
+#include <lib/lib.h> // For memcpy and pow
 
 typedef struct
 {
@@ -13,4 +13,5 @@ void set_pixel(int x, int y, Color color);
 Color get_pixel(int x, int y);
 void set_rect(int x, int y, int width, int height, Color color);
 void set_circle(int x0, int y0, int radius, Color color);
+void draw_round_rect(int x, int y, int width, int height, int radius, Color color);
 void flush();

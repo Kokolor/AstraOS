@@ -62,6 +62,28 @@ void set_circle(int x0, int y0, int radius, Color color)
     }
 }
 
+void draw_round_rect(int x, int y, int width, int height, int radius, Color color)
+{
+    for (int j = y; j < (y + height); j++)
+    {
+        for (int i = x; i < (x + width); i++)
+        {
+            int dx = i - x;
+            int dy = j - y;
+            if ((dx < radius && dy < radius && pow(dx - radius, 2) + pow(dy - radius, 2) > pow(radius, 2)) ||
+                (dx < radius && dy > height - radius && pow(dx - radius, 2) + pow(dy - (height - radius), 2) > pow(radius, 2)) ||
+                (dx > width - radius && dy < radius && pow(dx - (width - radius), 2) + pow(dy - radius, 2) > pow(radius, 2)) ||
+                (dx > width - radius && dy > height - radius && pow(dx - (width - radius), 2) + pow(dy - (height - radius), 2) > pow(radius, 2)))
+            {
+            }
+            else
+            {
+                set_pixel(i, j, color);
+            }
+        }
+    }
+}
+
 void flush()
 {
     memcpy(mbi->framebuffer_addr, mbi->framebuffer_addr + mbi->framebuffer_height * mbi->framebuffer_pitch, mbi->framebuffer_pitch * mbi->framebuffer_height);
