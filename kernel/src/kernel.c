@@ -7,42 +7,24 @@
 #include <res/res.h>
 #include <libasg/libasg.h>
 
-// TODO : Make bitmaps work in LibFrameBuffer
-
 void _kstart(multiboot_info_t *mboot_info)
 {
     init_serial();
-    printres(mboot_info);
     init_gdt();
     init_idt();
     init_isr();
     init_irq();
-    init_keyboard();
+    init_mm(mboot_info);
     init_libasg(mboot_info);
-    //init_libframebuf(mboot_info);
 
-    asm volatile("sti");
+    Image my_image;
+    my_image.width = DINDE_RGB_WIDTH;
+    my_image.height = DINDE_RGB_HEIGHT;
+    my_image.pixels = (uint32_t *)dinde_rgb;
 
-    int frames = 0;
-    char *frmstr;
+    set_image(&my_image, 0, 0);
 
-    Bitmap b;
-    b.width = SUCC_WIDTH;
-    b.height = SUCC_HEIGHT;
-    b.rawdata = succ;
+    flush();
 
-    Color c;
-    c.a = 255;
-    c.r = 0;
-    c.g = 0;
-    c.b = 0;
-
-    while (1)
-    {
-        set_rect(0,0, mboot_info->framebuffer_width, mboot_info->framebuffer_height, c);
-
-        set_bitmap(100, 100, b);
-
-        flush();
-    }
+    while (1);
 }

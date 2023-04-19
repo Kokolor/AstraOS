@@ -1,5 +1,7 @@
 #include <stdint.h>
 
+#define DINDE_RGB_WIDTH 128
+#define DINDE_RGB_HEIGHT 128
 #define ASTRALOGO_WIDTH 64
 #define ASTRALOGO_HEIGHT 64
 #define SUCC_WIDTH 121
@@ -10,3 +12,4 @@
 extern uint8_t dvdvideololol[];
 extern uint8_t succ[];
 extern uint8_t astralogo[];
+extern uint8_t dinde_rgb[];
