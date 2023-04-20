@@ -8,8 +8,11 @@
 #define SUCC_HEIGHT 70
 #define DVDVIDEOLOLOL_HEIGHT 151
 #define DVDVIDEOLOLOL_WIDTH 213
+#define DEFAULTFONT_CHARHEIGHT 16
+#define DEFAULTFONT_CHARWIDTH 8
 
-extern uint8_t dvdvideololol[];
-extern uint8_t succ[];
-extern uint8_t astralogo[];
-extern uint8_t dinde_rgb[];
+extern uint32_t dvdvideololol[];
+extern uint32_t succ[];
+extern uint32_t astralogo[];
+extern uint32_t dinde_rgb[];
+extern uint8_t defaultfont[];

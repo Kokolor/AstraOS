@@ -2,6 +2,9 @@
 
 multiboot_info_t *mbinfo;
 
+int cursorx = 0;
+int cursory = 0;
+
 void init_libasg(multiboot_info_t *info)
 {
     serial_puts("[AstraOS:Kernel] Initializing LibASG...");
@@ -109,6 +112,63 @@ void set_circle(int x0, int y0, int radius, Color color)
         {
             d += 4 * (x - y) + 10;
             y--;
+        }
+    }
+}
+
+void scrollup()
+{
+    for (int y = 0; y < 720 - 8; y++)
+    {
+        for (int x = 0; x < 1280; x++)
+        {
+            Color color = get_pixel(x, y + 8);
+            set_pixel(x, y, color);
+        }
+    }
+    Color c = {255,0,0,0};
+    set_rect(0, 720 - 8, 1280, 8, c);
+    flush();
+}
+
+void set_char(char c, int x, int y, Font *f, Color col)
+{
+    uint8_t *offset = f->rawdata + sizeof(FontHeader) + 16 * c;
+
+    for (int i = 0; i < 16; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (offset[i] & (1 << j))
+            {
+                set_pixel(x + 8 - j, y + i, col);
+            }
+        }
+    }
+}
+
+void set_string(char *s, int x, int y, Font *f, Color col)
+{
+    cursorx = x;
+    cursory = y;
+
+    for (int i = 0; s[i] != '\0'; i++)
+    {
+        if (s[i] == '\n')
+        {
+            cursorx = x;
+            cursory += f->charheight;
+            if (cursory >= 720)
+            {
+                scrollup();
+                cursory -= f->charheight;
+            }
+        }
+        else
+        {
+            set_char(s[i], cursorx, cursory, f, col);
+            cursorx += f->charwidth;
+            
         }
     }
 }
