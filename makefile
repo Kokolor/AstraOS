@@ -18,10 +18,10 @@ ASM_FLAGS :=                \
     -f elf32
 
 LD_FLAGS :=                 \
-    -nostdlib               \
-    -Tkernel/link.ld        \
-	-m elf_i386				\
-    -z max-page-size=0x1000
+    # -nostdlib               \
+    # -Tkernel/link.ld        \
+	# -m elf_i386				\
+    # -z max-page-size=0x1000
 
 .SUFFIXE: .c
 %.o: %.c
