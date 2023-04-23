@@ -89,11 +89,17 @@ int _kmain(multiboot_info_t *mboot_info)
 		movw %%ax, %%ds \n \
 		iret"
         : "=m"(default_tss.esp0)
+<<<<<<< HEAD
         :);**/
     
     init_usr(&task1);
     
     serial_puts(" FAIL\n");
     serial_puts("[AstraOS:Kernel] Critical error, halting system.\n");
+=======
+        :);
+
+    serial_puts("Critical error, halting system\n");
+>>>>>>> 050584b6e49b06f17dba9c9388bd0531f3b7294f
     asm("hlt");
 }

@@ -39,7 +39,20 @@ vector13:
 	RESTORE_REGS
 	add esp,4
 	iret
+vector13:
+	SAVE_REGS
+	call vector13_handler
+	RESTORE_REGS
+	add esp,4
+	iret
 
+vector32:
+	SAVE_REGS
+	call vector32_handler
+	mov al,0x20
+	out 0x20,al
+	RESTORE_REGS
+	iret
 vector32:
 	SAVE_REGS
 	call vector32_handler
@@ -53,6 +66,21 @@ vector33:
 	call vector33_handler
 	mov al,0x20
 	out 0x20,al
+	RESTORE_REGS
+	iret
+vector33:
+	SAVE_REGS
+	call vector33_handler
+	mov al,0x20
+	out 0x20,al
+	RESTORE_REGS
+	iret
+
+vector48:
+	SAVE_REGS
+	push eax
+	call do_syscalls
+	pop eax
 	RESTORE_REGS
 	iret
 
