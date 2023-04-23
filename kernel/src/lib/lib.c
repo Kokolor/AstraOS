@@ -32,17 +32,12 @@ void serial_puts(const char *str)
     }
 }
 
-void *memcpy(void *dest, const void *src, size_t n)
+void *memcpy(char *dst, char *src, int n)
 {
-    uint8_t *pdest = (uint8_t *)dest;
-    const uint8_t *psrc = (const uint8_t *)src;
-
-    for (size_t i = 0; i < n; i++)
-    {
-        pdest[i] = psrc[i];
-    }
-
-    return dest;
+    char *p = dst;
+    while (n--)
+        *dst++ = *src++;
+    return p;
 }
 
 void *memset(void *s, int c, size_t n)
@@ -94,22 +89,6 @@ int memcmp(const void *s1, const void *s2, size_t n)
     }
 
     return 0;
-}
-
-unsigned char inb(unsigned short port)
-{
-    unsigned char value;
-    asm volatile("inb %1, %0"
-                 : "=a"(value)
-                 : "Nd"(port));
-    return value;
-}
-
-void outb(unsigned short port, unsigned char value)
-{
-    asm volatile("outb %0, %1"
-                 :
-                 : "a"(value), "Nd"(port));
 }
 
 unsigned short inw(unsigned short port)

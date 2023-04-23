@@ -6,7 +6,9 @@
         "libframebuf.h": "c",
         "libfbfonts.h": "c",
         "libfbbitmaps.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "multiboot.h": "c",
+        "libasg.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -1,5 +1,4 @@
 #include "memory.h"
-#include <lib/lib.h>
 
 static uint8_t *mem_start_addr;
 static uint32_t mem_size;
@@ -7,7 +6,6 @@ static struct mem_block *free_list;
 
 void init_mm(multiboot_info_t *mb_info)
 {
-    serial_puts("[AstraOS:Kernel] Initializing Memory Manager...");
     uint32_t mem_upper = mb_info->mem_upper * 1024;
     uint32_t mem_lower = mb_info->mem_lower * 1024;
 
@@ -23,7 +21,6 @@ void init_mm(multiboot_info_t *mb_info)
         free_list->size = num_pages * PAGE_SIZE - sizeof(struct mem_block);
         free_list->used = false;
     }
-    serial_puts(" OK\n");
 }
 
 static void *alloc_mem_block(struct mem_block *block, size_t size)

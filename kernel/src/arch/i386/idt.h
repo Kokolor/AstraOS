@@ -35,32 +35,23 @@
 #define KEY_SPACE 0x39
 #define KEY_CAPSLOCK 0x3A
 
-struct idt_entry
-{
-    unsigned short base_lo;
-    unsigned short sel;
-    unsigned char always0;
-    unsigned char flags;
-    unsigned short base_hi;
-} __attribute__((packed));
+#define IDTBASE  0x800
+#define IDTSIZE  0xFF
 
-struct idt_ptr
-{
-    unsigned short limit;
-    unsigned int base;
-} __attribute__((packed));
+#define INTGATE  0x8E00
+#define TRAPGATE 0xEF00
 
-struct registers
-{
-    unsigned int gs, fs, es, ds;
-    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    unsigned int int_no, err_code;
-    unsigned int eip, cs, eflags, useresp, ss;    
-};
+struct idt_entry {
+	uint16_t offset0_15;
+	uint16_t select;
+	uint16_t type;
+	uint16_t offset16_31;
+} __attribute__ ((packed));
 
-void irq_install_handler(int irq, void (*handler)(struct registers *r));
-void irq_uninstall_handler(int irq);
-void init_isr();
-void init_keyboard();
-void init_idt();
-void init_irq();
+struct idt_ptr {
+	uint16_t limit;
+	uint32_t base;
+} __attribute__ ((packed));
+
+void init_idt(void);
+void init_pic(void);
