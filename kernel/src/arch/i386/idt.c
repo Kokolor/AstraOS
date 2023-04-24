@@ -8,6 +8,7 @@ void vector0(void);
 void vector13(void);
 void vector32(void);
 void vector33(void);
+void vector44(void);
 void vector48(void);
 
 extern int get_eip();
@@ -34,8 +35,9 @@ void init_idt(void)
 
     idt_set_gate(0x08, (uint32_t)vector13, INTGATE, &idt[13]);
 
-    idt_set_gate(0x08, (uint32_t)vector32, INTGATE, &idt[32]);
-    idt_set_gate(0x08, (uint32_t)vector33, INTGATE, &idt[33]);
+    //idt_set_gate(0x08, (uint32_t)vector32, INTGATE, &idt[32]);
+    //idt_set_gate(0x08, (uint32_t)vector33, INTGATE, &idt[33]);
+    idt_set_gate(0x08, (uint32_t)vector44, INTGATE, &idt[44]);
 
     idt_set_gate(0x08, (uint32_t)vector48, TRAPGATE, &idt[48]);
 
@@ -276,4 +278,63 @@ void vector33_handler(void)
             break;
         }
     }
+}
+
+// Mouse
+
+// Mouse movement data
+int16_t mouse_x_movement = 0;
+int16_t mouse_y_movement = 0;
+
+// Mouse packet data
+uint8_t mouse_packet[3];
+uint8_t mouse_packet_index = 0;
+
+void ps2_mouse_write(uint8_t data) {
+    // Wait until the PS/2 controller is ready to send data
+    while ((inb(PS2_STATUS_PORT) & 0x02) != 0);
+
+    // Send the command to the PS/2 mouse
+    outb(PS2_DATA_PORT, 0xD4);
+    while ((inb(PS2_STATUS_PORT) & 0x02) != 0);
+    outb(PS2_DATA_PORT, data);
+}
+
+void vector44_handler()
+{
+    serial_puts("mouse!!!!!!!");
+    // Read the status byte
+    uint8_t status = inb(PS2_STATUS_PORT);
+
+    // Check if the data is ready to be read
+    if ((status & 0x01) != 0) {
+        // Read the data byte
+        uint8_t data = inb(PS2_DATA_PORT);
+
+        // Check if this is the first byte of a packet
+        if ((status & 0x20) != 0) {
+            mouse_packet_index = 0;
+            mouse_packet[mouse_packet_index++] = data;
+        } else {
+            mouse_packet[mouse_packet_index++] = data;
+
+            // Check if this is the third byte of a packet
+            if (mouse_packet_index == 3) {
+                // Parse the mouse movement data from the packet
+                int8_t x_movement = mouse_packet[1];
+                int8_t y_movement = mouse_packet[2];
+
+                // Update the global mouse movement variables
+                mouse_x_movement += x_movement;
+                mouse_y_movement -= y_movement;
+
+                // Reset the packet index
+                mouse_packet_index = 0;
+            }
+        }
+    }
+}
+
+void init_mouse() {
+    ps2_mouse_write(0xF4);
 }

@@ -1,5 +1,5 @@
-extern vector0_handler, vector13_handler, vector32_handler, vector33_handler, do_syscalls
-global vector0, vector13, vector32, vector33, vector48, get_eip
+extern vector0_handler, vector13_handler, vector32_handler, vector33_handler, vector44_handler, do_syscalls
+global vector0, vector13, vector32, vector33, vector44, vector48, get_eip
 
 %macro	SAVE_REGS 0
 	pushad 
@@ -39,20 +39,7 @@ vector13:
 	RESTORE_REGS
 	add esp,4
 	iret
-vector13:
-	SAVE_REGS
-	call vector13_handler
-	RESTORE_REGS
-	add esp,4
-	iret
 
-vector32:
-	SAVE_REGS
-	call vector32_handler
-	mov al,0x20
-	out 0x20,al
-	RESTORE_REGS
-	iret
 vector32:
 	SAVE_REGS
 	call vector32_handler
@@ -68,19 +55,12 @@ vector33:
 	out 0x20,al
 	RESTORE_REGS
 	iret
-vector33:
+
+vector44:
 	SAVE_REGS
-	call vector33_handler
+	call vector44_handler
 	mov al,0x20
 	out 0x20,al
-	RESTORE_REGS
-	iret
-
-vector48:
-	SAVE_REGS
-	push eax
-	call do_syscalls
-	pop eax
 	RESTORE_REGS
 	iret
 

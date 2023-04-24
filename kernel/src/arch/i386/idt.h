@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include <lib/lib.h>
 
+#define PS2_DATA_PORT   0x60
+#define PS2_STATUS_PORT 0x64
+
 #define KEY_A 0x1E
 #define KEY_B 0x30
 #define KEY_C 0x2E
@@ -55,3 +58,8 @@ struct idt_ptr {
 
 void init_idt(void);
 void init_pic(void);
+
+extern int16_t mouse_x_movement;
+extern int16_t mouse_y_movement;
+
+void init_mouse();
